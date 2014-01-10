@@ -1,0 +1,35 @@
+<div class="hero-unit">
+    <h2>Lista de <%= names.constructor.plural %></h2>
+    <@- linkTo('Crear <%= names.constructor.singular %>', add<%= names.constructor.singular %>Path, {class: 'btn pull-right'}); @>
+</div>
+
+<div id="<%= names.property.plural %>-list">
+    <table class="table-hover table table-bordered table-striped">
+        <thead>
+            <% for(var i in properties) { -%>
+            <% if(properties[i].name && properties[i].name !== 'id') { -%>
+           
+        <th><%= properties[i].name %></th>
+        <% } %>
+        <% } %>
+        <th>Operaciones</th>
+        </thead>
+        <tbody>
+            <@ for (var i = 0, ii = <%= names.property.plural %>.length; i < ii; i++) { @>
+            <tr>
+                <% for(var j in properties) { -%>
+                <% if(properties[j].name && properties[j].name !== 'id') { -%>
+                <td><@= <%= names.property.plural %>[i]['<%= properties[j].name %>'] @></td>
+                <% } %>
+                <% } %>
+                <td>
+                    <form id="<%= names.property.singular %>-form" class="form-horizontal" action="/<%= names.filename.plural %>/<@= <%= names.property.plural %>[i]['id'] @>?_method=PUT" method="POST">
+                        <@- linkTo('Editar', edit<%= names.constructor.singular %>Path(<%= names.property.plural %>[i].id),{class: 'btn btn-primary'}) @>
+                        <@- contentTag('button', 'Borrar', {type: 'submit', formaction: '/<%= names.filename.plural %>/' + <%= names.property.plural %>[i].id + '?_method=DELETE', formmethod: 'POST', class: 'btn btn-danger'}) @>
+                    </form>
+                </td>
+            </tr>
+            <%% } %>
+        </tbody>
+    </table>
+</div>
